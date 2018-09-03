@@ -6,7 +6,7 @@ import tensorflow as tf
 import os
 import keras
 from keras.models import Sequential
-from keras.layers.core import Lambda, Dense, Flatten
+from keras.layers.core import Lambda, Dense, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D, Conv2D
 from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
@@ -113,6 +113,7 @@ model.add(Lambda(lambda x: x/127.5 - 1.,
                  input_shape=(row, col, ch)))
 model.add(Cropping2D(((70, 25), (0, 0))))
 model.add(Conv2D(24, 5, 5, subsample=(2, 2), activation='relu'))
+model.add(Dropout(rate=0.5))
 model.add(Conv2D(36, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Conv2D(48, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Conv2D(64, 3, 3, activation='relu'))
@@ -123,7 +124,6 @@ model.add(Dense(100))
 model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
-
 
 # callbacks
 callback = keras.callbacks.TensorBoard(
